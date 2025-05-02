@@ -1,0 +1,11 @@
+import express from "express";
+import bookcontroller from "../controller/bookruter.mjs";
+import auth from "../controller/authcontroller.mjs";
+const app = express.Router();
+app.post("/add-book", auth.authChecker, bookcontroller.addNewBook);
+app.put("/edit-book", auth.authChecker, bookcontroller.editBook);
+app.delete("/remove-book", auth.authChecker, bookcontroller.removeBook);
+app.get("/get-all", bookcontroller.getAllBook);
+app.get("/book/:id", bookcontroller.getBook);
+app.get("/my-book", auth.authChecker, bookcontroller.getMyBook);
+export default app;

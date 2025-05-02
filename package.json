@@ -1,0 +1,22 @@
+{
+    "name": "book-peroject",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "module",
+    "dependencies": {
+        "@sequelize/core": "^7.0.0-alpha.46",
+        "@sequelize/mysql": "^7.0.0-alpha.46",
+        "express": "^5.1.0",
+        "express-mysql-session": "^3.0.3",
+        "express-session": "^1.18.1",
+        "passport": "^0.7.0",
+        "passport-local": "^1.0.0"
+    }
+}
