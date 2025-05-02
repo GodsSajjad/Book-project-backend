@@ -32,8 +32,14 @@ export const Bookdb = con.define("Book", {
     },
 });
 
-Users.hasOne(Bookdb, {
+Users.hasMany(Bookdb, {
     foreignKey: "publisher",
     sourceKey: "username",
 });
+
+Bookdb.belongsTo(Users, {
+    foreignKey: "publisher",
+    targetKey: "username",
+});
+
 con.sync();
