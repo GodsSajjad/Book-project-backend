@@ -21,5 +21,5 @@ jobs:
       run: npm install
 
     - name: Run server
-      run: node index.js
+      run: node index.mjs
       
