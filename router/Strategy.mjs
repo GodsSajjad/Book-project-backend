@@ -1,6 +1,7 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
 import { getUserById, getUserByUsername } from "../models/db_User.mjs";
+import { comparePassword, hashPssword } from "../models/helper.mjs";
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
@@ -18,8 +19,9 @@ passport.use(
     new Strategy(async (username, password, done) => {
         try {
             const user = await getUserByUsername(username);
+
             if (!user) done("user not found", null);
-            else if (!(user.password === password)) {
+            else if (!(await comparePassword(password, user.password))) {
                 done("password invalid", null);
             } else {
                 done(null, user);

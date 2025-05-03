@@ -13,6 +13,7 @@
     "dependencies": {
         "@sequelize/core": "^7.0.0-alpha.46",
         "@sequelize/mysql": "^7.0.0-alpha.46",
+        "bcrypt": "^5.1.1",
         "express": "^5.1.0",
         "express-mysql-session": "^3.0.3",
         "express-session": "^1.18.1",

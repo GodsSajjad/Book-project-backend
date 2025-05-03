@@ -6,6 +6,7 @@ import {
     editUsernameById,
     getUserById,
 } from "../models/db_User.mjs";
+import { comparePassword, hashPssword } from "../models/helper.mjs";
 
 export default class authController {
     static async authChecker(req, res, next) {
@@ -21,7 +22,8 @@ export default class authController {
             if (await getUserByUsername(body.username))
                 res.status(401).send({ msg: "user found", body: null, res: false });
             else {
-                await addNewUser(body.username, body.password);
+                const Password = await hashPssword(body.password);
+                await addNewUser(body.username, Password);
 
                 req.session.user = await getUserByUsername(body.username);
                 res.status(201).redirect("/home");
@@ -74,8 +76,8 @@ export default class authController {
         try {
             const { body } = req;
             if (req.isAuthenticated()) {
-                if (body.brofe_password === req.user.password) {
-                    await editPasswordById(req.user.id, body.password);
+                if (await comparePassword(body.brofe_password, req.user.password)) {
+                    await editPasswordById(req.user.id, await hashPssword(body.password));
                     res.status(201).send({ msg: "password chenged", body: null, res: true });
                 } else {
                     res.status(401).send({
