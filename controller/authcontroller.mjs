@@ -26,7 +26,7 @@ export default class authController {
                 await addNewUser(body.username, Password);
 
                 req.session.user = await getUserByUsername(body.username);
-                res.status(201).redirect("/home");
+                res.status(201).send({ msg: "user created", body: null, res: true });
             }
         } catch (e) {
             res.status(501).send({ msg: "server error", body: null, res: false });

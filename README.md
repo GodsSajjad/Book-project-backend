@@ -4,19 +4,21 @@
 
 ## ویژگی‌ها
 
-- ثبت‌نام و ورود کاربران با Passport.js (Local Strategy)
-- مدیریت کتاب‌ها فقط توسط کاربران ادمین
-- نمایش لیست کتاب‌ها برای همه کاربران
-- اتصال به پایگاه داده MySQL با استفاده از ORM Sequelize 
-- ساختار RESTful برای روت‌ها
-- استفاده از معماری MVC برای پوشه بندی
+-   ثبت‌نام و ورود کاربران با Passport.js (Local Strategy)
+-   هش کردن پسورد ها هنگام ثبت نام
+-   مدیریت کتاب‌ها فقط توسط کاربران ادمین
+-   نمایش لیست کتاب‌ها برای همه کاربران
+-   اتصال به پایگاه داده MySQL با استفاده از ORM Sequelize
+-   ساختار RESTful برای روت‌ها
+-   استفاده از معماری MVC برای پوشه بندی
+
 ## تکنولوژی‌ها
 
-- Node.js + Express
-- Passport.js (Local Strategy)
-- MySQL
-- Express-session
-- Body-parser
+-   Node.js + Express
+-   Passport.js (Local Strategy)
+-   MySQL
+-   Express-session
+-   Body-parser
 
 ## نصب و راه‌اندازی
 
@@ -25,3 +27,4 @@
 ```bash
 git clone https://github.com/your-username/book-project.git
 cd book-project
+```
