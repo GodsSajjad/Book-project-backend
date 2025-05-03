@@ -17,7 +17,7 @@
 -   Passport.js (Local Strategy)
 -   MySQL
 -   Express-session
--   Body-parser
+-   bcrypt
 
 ## نصب و راه‌اندازی
 
