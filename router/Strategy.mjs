@@ -28,6 +28,7 @@ passport.use(
             }
         } catch (e) {
             console.log(e.message);
+            done(e, null);  
         }
     })
 );
