@@ -2,7 +2,7 @@ import { Sequelize } from "@sequelize/core";
 let sequelize = new Sequelize({
     port: 3306,
     database: "Book_Database",
-    password: "sajjad905987",
+    password: "enter your password db",
     user: "root",
     dialect: "mysql",
     host: "127.0.0.1",
