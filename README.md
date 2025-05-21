@@ -24,6 +24,6 @@
 1. مخزن را کلون کنید:
 
 ```bash
-git clone https://github.com/your-username/book-project.git
+git clone https://github.com/GodsSajjad/book-project.git
 cd book-project
 ```
