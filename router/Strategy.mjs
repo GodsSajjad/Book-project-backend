@@ -2,32 +2,30 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import { getUserById, getUserByUsername } from "../models/db_User.mjs";
 import { comparePassword, hashPssword } from "../models/helper.mjs";
+import catchfn from "../utails/catchError.mjs";
+import AppError from "../utails/AppError.mjs";
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
-passport.deserializeUser(async (id, done) => {
-    try {
+passport.deserializeUser(
+    catchfn(async (id, done) => {
         const user = await getUserById(id);
-        if (!user) return done("user not found", null);
+        if (!user) return done(new AppError("user not found", 404));
         else return done(null, user);
-    } catch (e) {
-        return done(e, null);
-    }
-});
+    })
+);
 
 passport.use(
-    new Strategy(async (username, password, done) => {
-        try {
+    new Strategy(
+        catchfn(async (username, password, done) => {
             const user = await getUserByUsername(username);
 
-            if (!user) done("user not found", null);
+            if (!user) return done(new AppError("user not found", 404));
             else if (!(await comparePassword(password, user.password))) {
-                done("password invalid", null);
+                return done(new AppError("password invalid", 403));
             } else {
                 done(null, user);
             }
-        } catch (e) {
-            console.log(e.message);
-        }
-    })
+        })
+    )
 );

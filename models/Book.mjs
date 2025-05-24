@@ -5,6 +5,8 @@ import {
     getBook,
     removeBookById,
     getMyBook,
+    getBookByIdAndPublisher,
+    getBookByPublisher,
 } from "./db_book.mjs";
 import { findAdmin } from "./db_User.mjs";
 export default class Book {
@@ -33,6 +35,20 @@ export default class Book {
         if (await getBook(idOrTitle)) {
             return await getBook(idOrTitle);
         }
+        return false;
+    }
+    static async getBookByIdAndPublisher(id, publisher) {
+        if (id) {
+            return await getBookByIdAndPublisher(id, publisher);
+        }
+
+        return false;
+    }
+    static async getBookByPublisher(publisher) {
+        if (await getBookByPublisher(publisher)) {
+            return await getBookByPublisher(publisher);
+        }
+
         return false;
     }
     static async editById(title, data) {

@@ -10,9 +10,22 @@ export const Users = con.define("User", {
         type: DataTypes.STRING,
         allowNull: false,
     },
+
     isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+    },
+    accessToken: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+    },
+    refreshToken: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+    },
+    ip: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
 });
 export const Bookdb = con.define("Book", {
@@ -25,10 +38,17 @@ export const Bookdb = con.define("Book", {
     },
     publisher: {
         type: DataTypes.STRING,
+
+        unique: "publisher_unique",
     },
     data: {
         type: DataTypes.TEXT,
         allowNull: false,
+    },
+    book_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: "publisher_unique",
     },
 });
 

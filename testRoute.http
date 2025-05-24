@@ -1,7 +1,8 @@
-POST http://127.0.0.1:3000/auth/register
+POST  http://127.0.0.1:3000/auth/register
 Content-Type: application/json
+Authorization: Bearer 
 
 {
-    "username":"GodsSajjad",
-    "password":"12345"
+    "username":"SajJadmsp",
+    "password":"Sajjad"
 }

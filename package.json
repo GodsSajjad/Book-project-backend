@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start:dev": "NODE_INFO=development nodemon index.mjs",
+        "start:prod": "NODE_INFO=prodoction nodemon index.mjs"
     },
     "keywords": [],
     "author": "",
@@ -14,9 +15,15 @@
         "@sequelize/core": "^7.0.0-alpha.46",
         "@sequelize/mysql": "^7.0.0-alpha.46",
         "bcrypt": "^5.1.1",
+        "cookie-parser": "^1.4.7",
+        "cors": "^2.8.5",
+        "dotenv": "^16.5.0",
         "express": "^5.1.0",
         "express-mysql-session": "^3.0.3",
+        "express-rate-limit": "^7.5.0",
         "express-session": "^1.18.1",
+        "joi": "^17.13.3",
+        "jsonwebtoken": "^9.0.2",
         "passport": "^0.7.0",
         "passport-local": "^1.0.0"
     }

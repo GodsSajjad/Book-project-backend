@@ -1,11 +1,26 @@
 import express from "express";
 import bookcontroller from "../controller/bookruter.mjs";
-import auth from "../controller/authcontroller.mjs";
+import { vrify_Access_Token } from "../middleware/Veryfy_Access_Token.mjs";
+import { isAdmin_verifyer } from "../middleware/verify_isAdmin.mjs";
+import { BooksLimiter } from "../middleware/rateLimit.mjs";
 const app = express.Router();
-app.post("/add-book", auth.authChecker, bookcontroller.addNewBook);
-app.put("/edit-book", auth.authChecker, bookcontroller.editBook);
-app.delete("/remove-book", auth.authChecker, bookcontroller.removeBook);
-app.get("/get-all", bookcontroller.getAllBook);
-app.get("/book/:id", bookcontroller.getBook);
-app.get("/my-book", auth.authChecker, bookcontroller.getMyBook);
+app.get("/get-all", BooksLimiter, bookcontroller.getAllBook);
+app.get("/book/:publisher/:id", BooksLimiter, bookcontroller.getBookID);
+app.get("/book/:publisher", BooksLimiter, bookcontroller.getBookPUb);
+app.post(
+    "/add-book",
+    BooksLimiter,
+    vrify_Access_Token,
+    isAdmin_verifyer,
+    bookcontroller.addNewBook
+);
+app.put("/edit-book", BooksLimiter, vrify_Access_Token, isAdmin_verifyer, bookcontroller.editBook);
+app.delete(
+    "/remove-book",
+    BooksLimiter,
+    vrify_Access_Token,
+    isAdmin_verifyer,
+    bookcontroller.removeBook
+);
+app.get("/my-book", BooksLimiter, vrify_Access_Token, isAdmin_verifyer, bookcontroller.getMyBook);
 export default app;

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fa">
+    <head>
+        <meta charset="UTF-8" />
+        <title>ارسال فرم با هدر</title>
+    </head>
+    <body>
+        <h2>فرم ورود</h2>
+        <form id="loginForm">
+            <label for="username">نام کاربری:</label>
+            <input type="text" id="username" name="username" required /><br /><br />
+
+            <label for="password">رمز عبور:</label>
+            <input type="password" id="password" name="password" required /><br /><br />
+
+            <button type="submit">ورود</button>
+            <form id="logout">
+                <input type="submit" id="submitlogout" />
+            </form>
+        </form>
+
+        <script>
+            let accessToken;
+            document.getElementById("loginForm").addEventListener("submit", function (e) {
+                e.preventDefault(); // جلو‌گیری از ارسال پیش‌فرض فرم
+
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+
+                fetch("http://127.0.0.1:3000/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Custom-Header": "MyCustomValue", // هدر سفارشی
+                        Authorization: "Bearer exampletoken", // مثلا برای احراز هویت
+                    },
+                    body: JSON.stringify({ username, password }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        accessToken = data.body.accessToken;
+                        fetch("http://127.0.0.1:3000/get-all", {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${data.body.accessToken}`,
+                            },
+                        })
+                            .then((res) => res.json())
+                            .then((data) => console.log(data));
+                    })
+                    .catch((error) => {
+                        console.error("خطا:", error);
+                    });
+            });
+            document.getElementById("submitlogout").addEventListener("submit", (e) => {
+                e.preventDefault();
+                fetch("http://127.0.0.1:3000/auth/logout", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Custom-Header": "MyCustomValue", // هدر سفارشی
+                        Authorization: `Bearer ${accessToken ? accessToken : ""}`, // مثلا برای احراز هویت
+                    },
+                })
+                    .then((res) => res.json())
+                    .then((data) => console.log(data.body));
+            });
+        </script>
+    </body>
+</html>

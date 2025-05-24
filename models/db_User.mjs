@@ -1,37 +1,43 @@
 import { Users } from "./con.mjs";
 export async function findAdmin(username) {
-    const Data = await Users.findOne({
-        where: {
-            username,
-        },
-        raw: false,
-    });
-    if (Data) {
-        const user = Data.dataValues;
-        if (user.isAdmin) {
-            return true;
+    try {
+        const Data = await Users.findOne({
+            where: {
+                username,
+            },
+            raw: false,
+        });
+        if (Data) {
+            const user = Data.dataValues;
+            if (user.isAdmin) {
+                return true;
+            }
+            return false;
         }
         return false;
+    } catch (e) {
+        return false;
     }
-    return false;
 }
 
-export async function addNewUser(username, password) {
+export async function addNewUser(username, password, accessToken, refreshToken, ip) {
     try {
         await Users.create({
-            username,
+            username: username.toLowerCase(),
             password,
+            accessToken,
+            refreshToken,
+            ip,
         });
         return true;
     } catch (e) {
-        console.log(e.message);
         return false;
     }
 }
 export async function editUsernameById(id, username) {
     try {
         await Users.update(
-            { username },
+            { username: username.toLowerCase() },
             {
                 where: {
                     id,
@@ -40,7 +46,21 @@ export async function editUsernameById(id, username) {
         );
         return true;
     } catch (e) {
-        console.log(e.message);
+        return false;
+    }
+}
+export async function editUsernameByUsername(brofe, newusername) {
+    try {
+        await Users.update(
+            { username: newusername.toLowerCase() },
+            {
+                where: {
+                    username: brofe,
+                },
+            }
+        );
+        return true;
+    } catch (e) {
         return false;
     }
 }
@@ -56,39 +76,87 @@ export async function editPasswordById(id, password) {
         );
         return true;
     } catch (e) {
-        console.log(e.message);
+        return false;
+    }
+}
+export async function editPasswordByUsername(brofe, newpassword) {
+    try {
+        await Users.update(
+            { password: newpassword },
+            {
+                where: {
+                    username: brofe,
+                },
+            }
+        );
+        return true;
+    } catch (e) {
         return false;
     }
 }
 
-export async function getUserByUsername(idOrUsername) {
+export async function getUserByUsername(username) {
     try {
-        if (typeof idOrUsername === "string") {
-            const Data = await Users.findOne({
-                attributes: ["id", "username", "password", "isAdmin"],
-                where: {
-                    username: idOrUsername,
-                },
-                raw: true,
-            });
+        const Data = await Users.findOne({
+            attributes: [
+                "id",
+                "username",
+                "password",
+                "isAdmin",
+                "refreshToken",
+                "accessToken",
+                "ip",
+            ],
+            where: {
+                username: username.toLowerCase(),
+            },
+        });
 
-            return Data;
-        }
+        return Data;
     } catch (e) {
-        console.log(e.message);
+        return false;
+    }
+}
+export async function getUserByRefreshtoken(refreshToken) {
+    try {
+        const Data = await Users.findOne({
+            attributes: [
+                "id",
+                "username",
+                "password",
+                "isAdmin",
+                "refreshToken",
+                "accessToken",
+                "ip",
+            ],
+            where: {
+                refreshToken,
+            },
+        });
+
+        return Data;
+    } catch (e) {
+        return false;
     }
 }
 export async function getUserById(id) {
     try {
         const Data = await Users.findOne({
-            attributes: ["id", "username", "password", "isAdmin"],
+            attributes: [
+                "id",
+                "username",
+                "password",
+                "isAdmin",
+                "refreshToken",
+                "accessToken",
+                "ip",
+            ],
             where: {
                 id: Number(id),
             },
-            raw: true,
         });
         return Data;
     } catch (e) {
-        return e.message;
+        return false;
     }
 }
