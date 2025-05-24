@@ -1,30 +1,50 @@
-version: '3.8'
+name: Node.js with MariaDB CI
 
-services:
-  mariadb:
-    image: mariadb:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
-    ports:
-      - "3306:3306"
-    volumes:
-      - mariadb_data:/var/lib/mysql
-    restart: always
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-  app:
-    image: node:18
-    working_dir: /usr/src/app
-    volumes:
-      - ./:/usr/src/app
-    command: node index.js
-    depends_on:
-      - mariadb
-    environment:
-      DB_HOST: mariadb
-      DB_USER: root
-      DB_PASSWORD: 123456
-    ports:
-      - "3000:3000"
+jobs:
+  test:
+    runs-on: ubuntu-latest
 
-volumes:
-  mariadb_data:
+    services:
+      mariadb:
+        image: mariadb:latest
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        env:
+          MYSQL_ROOT_PASSWORD: 123456
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Wait for MariaDB to be ready
+      run: |
+        for i in {1..30}; do
+          mysqladmin ping -h 127.0.0.1 -P 3306 --silent && break
+          echo "Waiting for MariaDB..."
+          sleep 2
+        done
+
+    - name: Run index.js
+      run: node index.js
+      env:
+        DB_HOST: 127.0.0.1
+        DB_USER: root
+        DB_PASSWORD: 123456
