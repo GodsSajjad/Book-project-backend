@@ -26,6 +26,14 @@ passport.use(
             } else {
                 done(null, user);
             }
+<<<<<<< HEAD
         })
     )
+=======
+        } catch (e) {
+            console.log(e.message);
+            done(e, null);  
+        }
+    })
+>>>>>>> 66660bb00d8219c7f028e551d455840c551ee3a5
 );

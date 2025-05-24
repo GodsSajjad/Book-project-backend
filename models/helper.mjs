@@ -7,6 +7,7 @@ export async function hashPssword(password) {
         return hashed;
     } catch (e) {
         console.log(e.message);
+        return null;
     }
 }
 export async function comparePassword(peain, hashed) {
@@ -15,5 +16,6 @@ export async function comparePassword(peain, hashed) {
         return result;
     } catch (e) {
         console.log(e.message);
+        return false;
     }
 }
