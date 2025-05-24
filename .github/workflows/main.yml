@@ -1,25 +1,30 @@
-name: Node.js Server
+version: '3.8'
 
-on:
-  push:
-    branches: [ "master" ]
+services:
+  mariadb:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    restart: always
 
-jobs:
-  run-server:
-    runs-on: ubuntu-latest
+  app:
+    image: node:18
+    working_dir: /usr/src/app
+    volumes:
+      - ./:/usr/src/app
+    command: node index.js
+    depends_on:
+      - mariadb
+    environment:
+      DB_HOST: mariadb
+      DB_USER: root
+      DB_PASSWORD: 123456
+    ports:
+      - "3000:3000"
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Run server
-      run: node index.mjs
-      
+volumes:
+  mariadb_data:
